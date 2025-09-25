@@ -1,18 +1,28 @@
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.Events;
 
 public class CountdownTimerTMP : MonoBehaviour
 {
+    [Header("UI")]
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private TMP_Text penaltyText;
+
+    [Header("Timing")]
     [SerializeField] private int startSeconds = 60;
     [SerializeField] private int penaltySeconds = 0;
     [SerializeField] private bool autoStart = true;
 
+    [Header("Events")]
+    [Tooltip("Invoked exactly once when the timer reaches 0.")]
+    [SerializeField] private UnityEvent onTimerFinished;
+
     private float remaining;
     private bool running;
+    private bool firedEvent = false;
 
+    // Legacy Action for code subscribers (optional)
     public Action OnTimerEnded;
 
     void Awake()
@@ -29,13 +39,23 @@ public class CountdownTimerTMP : MonoBehaviour
     void Update()
     {
         if (!running) return;
-        remaining -= Time.deltaTime;          // ✅ obeys Time.timeScale
+
+        // Use scaled time so Pause stops the timer
+        remaining -= Time.deltaTime;
+
         if (remaining <= 0f)
         {
             remaining = 0f;
             running = false;
-            OnTimerEnded?.Invoke();
+
+            if (!firedEvent)
+            {
+                firedEvent = true; // ensure it only fires once
+                OnTimerEnded?.Invoke();
+                onTimerFinished?.Invoke();
+            }
         }
+
         UpdateUI();
     }
 
@@ -47,19 +67,21 @@ public class CountdownTimerTMP : MonoBehaviour
     }
 
     public void StartTimer() => running = true;
-    public void StopTimer() => running = false;
+    public void StopTimer()  => running = false;
+
     public void ResetTimer(int newStartSeconds)
     {
-        startSeconds = newStartSeconds;
+        startSeconds   = newStartSeconds;
         penaltySeconds = 0;
-        remaining = startSeconds;
-        running = false;
+        remaining      = startSeconds;
+        running        = false;
+        firedEvent     = false;
         UpdateUI();
     }
 
     private void UpdateUI()
     {
-        if (timerText != null) timerText.text = $"Time: {Mathf.CeilToInt(remaining):00}";
-        if (penaltyText != null) penaltyText.text = $"Penalty: {penaltySeconds}s";
+        if (timerText)   timerText.text   = $"Time: {Mathf.CeilToInt(remaining):00}";
+        if (penaltyText) penaltyText.text = $"Penalty: {penaltySeconds}s";
     }
 }
