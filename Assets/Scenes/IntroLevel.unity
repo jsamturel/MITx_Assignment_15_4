@@ -343,7 +343,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuPanel: {fileID: 740859789}
-  pauseButton: {fileID: 1865740033}
 --- !u!114 &99269126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2379,8 +2378,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -275, y: 230}
-  m_SizeDelta: {x: 250, y: 150}
+  m_AnchoredPosition: {x: -275, y: 250}
+  m_SizeDelta: {x: 250, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &642139888
 MonoBehaviour:
@@ -2402,16 +2401,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Controllers:
+  m_text: 'Keyboard Controllers:
 
     Arrows to navigate
 
+    W - Accelrate
+
+    S
+    - Brake / slow down
+
     Honk - Spacebar
 
-    Delivery
-    - Enter
+    Delivery - Enter
 
-    Pause -p or  Escape'
+    Pause -p
+    or  Escape'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
